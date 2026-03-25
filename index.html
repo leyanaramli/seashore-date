@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div id="loading-overlay">
+        <div class="envelope" onclick="openEnvelope()">
+            <div class="seal">💞</div>
+            <p>You have a message from Yana</p>
+            <small>Click the seal to open</small>
+        </div>
+    </div>
+
     <div id="world">
         <div id="sky" class="sky afternoon">
             <div class="sun"></div>
@@ -66,7 +75,7 @@
         <div class="overlay">
             <div class="paper-sheet">
                 <h3>A Promise for the Sea</h3>
-                <textarea id="letter-input" placeholder="Dear Yana,\n\nForever yours,\nCarl"></textarea>
+                <textarea id="letter-input" placeholder="Dear Yana,"></textarea>
                 <button class="ui-btn" onclick="finishWriting()">Finish Writing</button>
             </div>
         </div>
@@ -76,13 +85,15 @@
         <div class="overlay">
             <div class="love-note">
                 <h2>Happy 5th Monthsary!</h2>
-                <p>I appreciate you more than words can ever express. These 5 months have been the highlight of my life. Thank you for being my peace, my partner, and my sayang.</p>
-                <p style="font-weight: 600;">I love you, Carl. ❤️</p>
+                <p>I appreciate you more than words can ever express. These 5 months have been challenging but it was worth it. Thank you for being my peace, my partner, and my sayang.</p>
+                <p style="font-weight: 600;">I love you, I love you more, I love you most. ❤️</p>
                 <button class="ui-btn" onclick="location.reload()">Relive the Memory</button>
             </div>
         </div>
     </div>
 
+    <audio id="bg-music" src="seavibe.mp3" loop></audio>
+    <audio id="ending-music" src="endingmusic.mp3" loop></audio>
     <script src="script.js"></script>
 </body>
 </html>
