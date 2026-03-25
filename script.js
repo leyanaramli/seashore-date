@@ -5,7 +5,6 @@ let itemReviewIndex = 0;
 
 const yanaLetter = "Dear Carl,\n\nMy only wish is to be by your side for every sunset yet to come. These 5 months have been my favorite story. I love you more than the ocean is deep.\n\nForever yours,\nYana";
 
-// metaphors
 const reviewMetaphors = {
     "Sea Glass": { icon: "💎", yana: "\"This glass was once sharp and broken, but the ocean turned it into something smooth and beautiful. Just like how we grow through the rough waves, Carl.\"", carl: "\"It reminds me that time makes us stronger together.\"" },
     "Shining Pearl": { icon: "🫧", yana: "\"Pearls grow in secret, hidden away until they're ready to shine. Our love felt like that at first—a little secret only we knew.\"", carl: "\"And now it's the brightest thing in my life.\"" },
@@ -81,23 +80,45 @@ const story = {
     }
 };
 
+function openEnvelope() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.add('fade-out');
+    
+    // Start the fade-in music
+    const music = document.getElementById('bg-music');
+    music.volume = 0;
+    music.play().catch(e => console.log("Audio play failed: ", e));
+    
+    let fadeIn = setInterval(() => {
+        if (music.volume < 0.15) {
+            music.volume += 0.05;
+        } else {
+            music.volume = 0.2;
+            clearInterval(fadeIn);
+        }
+    }, 200);
+}
+
+function playMusic() {
+    const music = document.getElementById('bg-music');
+    if (music.paused) {
+        music.volume = 0.2; 
+        music.play().catch(e => console.log("Audio play failed: ", e));
+    }
+}
+
 function renderScene(key) {
     if (key === "explore_hub" && bag.length === totalTreasures) {
         renderScene("sunset_ready");
         return;
     }
 
-    // item review
     if (key === "review_items") {
         const itemName = Object.keys(reviewMetaphors)[itemReviewIndex];
         const data = reviewMetaphors[itemName];
-        
-        // show popout automatically
         showItemPopup({icon: data.icon, item: itemName, desc: "This..."}, true);
-
         document.getElementById('speaker-name').innerText = "Yana";
         document.getElementById('dialogue-text').innerText = data.yana;
-        
         const container = document.getElementById('choice-buttons');
         container.innerHTML = `<button class="ui-btn" onclick="reviewNext()">${data.carl}</button>`;
         return;
@@ -132,6 +153,7 @@ function renderScene(key) {
         btn.className = "ui-btn";
         btn.innerText = choice.text;
         btn.onclick = () => {
+            playMusic();
             if (choice.reply) {
                 document.getElementById('dialogue-text').innerText = choice.reply;
                 container.innerHTML = `<button class="ui-btn" onclick="renderScene('${choice.next}')">Continue...</button>`;
@@ -149,7 +171,6 @@ function reviewNext() {
     if (itemReviewIndex < totalTreasures) {
         renderScene("review_items");
     } else {
-        // move to the final speech before writing
         document.getElementById('speaker-name').innerText = "Yana";
         document.getElementById('dialogue-text').innerText = "\"Everything we found... it's like a map of us. Let's put our promises on paper now, Carl.\"";
         document.getElementById('choice-buttons').innerHTML = `<button class="ui-btn" onclick="renderScene('trigger_writing')">Open the paper</button>`;
@@ -161,7 +182,6 @@ function showItemPopup(scene, isReview = false) {
     document.getElementById('popup-title').innerText = scene.item;
     document.getElementById('popup-desc').innerText = scene.desc;
     document.getElementById('item-popup').classList.remove('hidden');
-    
     const btn = document.getElementById('close-popup');
     if (isReview) {
         btn.innerText = "Reflect together";
@@ -182,11 +202,7 @@ function toggleInventory() {
     Object.keys(reviewMetaphors).forEach(name => {
         const item = reviewMetaphors[name];
         const hasIt = bag.includes(name);
-        list.innerHTML += `
-            <div class="inv-slot ${hasIt ? '' : 'locked'}">
-                <div class="inv-icon">${hasIt ? item.icon : '?'}</div>
-                <div class="inv-name">${hasIt ? name : '???'}</div>
-            </div>`;
+        list.innerHTML += `<div class="inv-slot ${hasIt ? '' : 'locked'}"><div class="inv-icon">${hasIt ? item.icon : '?'}</div><div class="inv-name">${hasIt ? name : '???'}</div></div>`;
     });
     document.getElementById('inventory-modal').classList.toggle('hidden');
 }
@@ -201,11 +217,7 @@ function showExchangeOptions() {
     document.getElementById('speaker-name').innerText = "Yana";
     document.getElementById('dialogue-text').innerText = "She hands me her paper with a nervous smile. \"I'm ready when you are, Carl.\"";
     const container = document.getElementById('choice-buttons');
-    container.innerHTML = `
-        <button class="ui-btn" onclick="viewLetter('Yana')">Read Yana's Letter</button>
-        <button class="ui-btn" onclick="viewLetter('Carl')">Check My Own Letter</button>
-        <button class="ui-btn" onclick="startEnding()">Seal and Cast into the Sea</button>
-    `;
+    container.innerHTML = `<button class="ui-btn" onclick="viewLetter('Yana')">Read Yana's Letter</button><button class="ui-btn" onclick="viewLetter('Carl')">Check My Own Letter</button><button class="ui-btn" onclick="startEnding()">Seal and Cast into the Sea</button>`;
 }
 
 function viewLetter(who) {
@@ -221,6 +233,30 @@ function viewLetter(who) {
 function startEnding() {
     document.getElementById('game-ui').classList.add('hidden');
     document.querySelector('.sun').classList.add('setting');
+
+    const currentMusic = document.getElementById('bg-music');
+    const endMusic = document.getElementById('ending-music');
+    
+    let fadeOut = setInterval(() => {
+        if (currentMusic.volume > 0.05) {
+            currentMusic.volume -= 0.05;
+        } else {
+            currentMusic.pause();
+            clearInterval(fadeOut);
+            
+            endMusic.volume = 0;
+            endMusic.play();
+            let fadeIn = setInterval(() => {
+                if (endMusic.volume < 0.15) {
+                    endMusic.volume += 0.05;
+                } else {
+                    endMusic.volume = 0.2;
+                    clearInterval(fadeIn);
+                }
+            }, 200);
+        }
+    }, 200);
+
     setTimeout(() => {
         document.getElementById('sky').className = "sky night";
         document.getElementById('drifting-bottle').classList.remove('hidden');
@@ -228,5 +264,13 @@ function startEnding() {
     setTimeout(() => { document.querySelector('.moon').classList.add('rising'); }, 4500);
     setTimeout(() => { document.getElementById('final-message').classList.remove('hidden'); }, 13000);
 }
+
+function reloadGame() {
+    document.getElementById('bg-music').pause();
+    document.getElementById('ending-music').pause();
+    location.reload();
+}
+
+document.querySelector('#final-message button').onclick = reloadGame;
 
 renderScene('start');
