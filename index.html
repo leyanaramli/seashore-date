@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Seashore Date</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="world">
+        <div id="sky" class="sky afternoon">
+            <div class="sun"></div>
+            <div class="moon"></div>
+            <div class="stars"></div>
+            <div class="cloud c1"></div>
+            <div class="cloud c2"></div>
+            <div class="cloud c3"></div>
+            <div class="cloud c4"></div>
+        </div>
+        <div class="ocean">
+            <div class="wave w1"></div>
+            <div class="wave w2"></div>
+            <div id="drifting-bottle" class="hidden">🍾</div>
+        </div>
+        <div class="beach">
+            <div class="deco-shell" style="left: 12%; bottom: 25%;">🐚</div>
+            <div class="deco-shell" style="right: 18%; bottom: 45%;">🐚</div>
+        </div>
+    </div>
+
+    <div id="inventory" onclick="toggleInventory()" style="cursor: pointer;">🎒 <span id="inv-count">0</span>/5 Treasures</div>
+
+    <div id="inventory-modal" class="hidden overlay">
+        <div class="inv-box">
+            <h3>Memory Collection</h3>
+            <div id="inventory-list"></div>
+            <button class="ui-btn" onclick="toggleInventory()">Close Bag</button>
+        </div>
+    </div>
+
+    <div id="game-ui">
+        <div id="speaker-name"></div>
+        <div id="dialogue-text"></div>
+        <div id="choice-buttons" class="choice-stack"></div>
+    </div>
+
+    <div id="item-popup" class="hidden">
+        <div class="popup-box">
+            <div id="popup-icon"></div>
+            <h2 id="popup-title"></h2>
+            <p id="popup-desc"></p>
+            <button class="ui-btn" id="close-popup">Keep it safe</button>
+        </div>
+    </div>
+
+    <div id="letter-view-popup" class="hidden">
+        <div class="handwritten-paper">
+            <h4 id="letter-from-tag"></h4>
+            <p id="letter-content" class="handwriting"></p>
+            <button class="ui-btn" id="close-letter-view">Back</button>
+        </div>
+    </div>
+
+    <div id="letter-ui" class="hidden">
+        <div class="overlay">
+            <div class="paper-sheet">
+                <h3>A Promise for the Sea</h3>
+                <textarea id="letter-input" placeholder="Dear Yana,\n\nForever yours,\nCarl"></textarea>
+                <button class="ui-btn" onclick="finishWriting()">Finish Writing</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="final-message" class="hidden">
+        <div class="overlay">
+            <div class="love-note">
+                <h2>Happy 5th Monthsary!</h2>
+                <p>I appreciate you more than words can ever express. These 5 months have been the highlight of my life. Thank you for being my peace, my partner, and my sayang.</p>
+                <p style="font-weight: 600;">I love you, Carl. ❤️</p>
+                <button class="ui-btn" onclick="location.reload()">Relive the Memory</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
