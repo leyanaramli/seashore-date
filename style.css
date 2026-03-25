@@ -8,6 +8,62 @@ body, html {
     font-family: 'Poppins', sans-serif; overflow: hidden; background: #000;
 }
 
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: #fdf5e6; /* Paper color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 1.5s ease, visibility 1.5s;
+    text-align: center;
+}
+
+.envelope {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.envelope:hover {
+    transform: scale(1.05);
+}
+
+.seal {
+    font-size: 60px;
+    background: #b22222;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+}
+
+#loading-overlay p {
+    font-family: 'Poppins';
+    font-weight: 600;
+    color: #5d4037;
+    margin: 10px 0 5px;
+}
+
+#loading-overlay small {
+    color: #a1887f;
+    font-style: italic;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(178, 34, 34, 0.4); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(178, 34, 34, 0); }
+    100% { transform: scale(1); }
+}
+
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
 #world { height: 100vh; width: 100vw; display: flex; flex-direction: column; position: relative; }
 
 .sky { height: 50%; transition: background 8s ease; position: relative; overflow: hidden; z-index: 1; }
